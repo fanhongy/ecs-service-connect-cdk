@@ -11,9 +11,10 @@ export class EcsServiceConnectDemoStack extends cdk.Stack {
     super(scope, id, props);
 
     // VPC
-    const vpc = ec2.Vpc.fromLookup(this, 'VPC', {
-      vpcId: 'vpc-0d2733d2d38dad954'
-    })
+    const vpc = new ec2.Vpc(this, 'Vpc', {
+      maxAzs: 2,
+      natGateways: 1,
+    });
 
     // ECS Cluster
     const cluster = new ecs.Cluster(this, 'EcsCluster', {
