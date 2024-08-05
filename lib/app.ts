@@ -4,6 +4,7 @@ import * as ecs from 'aws-cdk-lib/aws-ecs';
 import * as ecr_assets from 'aws-cdk-lib/aws-ecr-assets';
 import * as elbv2 from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import { Construct } from 'constructs';
+import { CfnOutput } from 'aws-cdk-lib';
 
 export class EcsServiceConnectDemoStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -167,6 +168,13 @@ export class EcsServiceConnectDemoStack extends cdk.Stack {
     listener.addTargets('ServiceATarget', {
       port: 80,
       targets: [nginxService],
+    });
+
+    // define an outpu in CluodFormation with ALB url as value: 
+    new CfnOutput (this, 'ALBUrl', {
+      value: alb.loadBalancerDnsName,
+      description: 'The URL of the Application Load Balancer',
+      exportName: 'ALBUrl',
     });
   }
 }
